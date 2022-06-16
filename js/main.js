@@ -44,20 +44,46 @@ switch (ingreso) {
 
         case "3":
 
-            function names() {
-                var nombres = [];
-                var cont = "";
-                for (var i = 0; i <= 2; i++) {
-                    var x = prompt("Ingresa tu nombre:");
-                    nombres[i] = x;
-                }
-                for (var i = 0; i <= 2; i++) {
-                    cont += nombres[i] + " ";
-                }
-                document.getElementById("here").innerHTML = cont;
+            const contactos = [];
+            function agregarContacto() {
+              let nuevoContacto = { Nombre: "", Altura: 0.0 };
+              nuevoContacto.Nombre = prompt("Ingrese el nombre");
+              nuevoContacto.Altura = parseInt(prompt("Ingrese la altura (en centimetros)"));
+              contactos.push(nuevoContacto);
+              console.clear();
+              console.table(contactos);
             }
             
-            names();  
+            function listarContactos() {
+              let filas = "";
+              let muestra = "";
+              for (elemento of contactos) {
+                filas += `<tr><td>${elemento.Nombre}</td><td>${elemento.Altura}</td></tr>`;
+                muestra += `${elemento.Nombre} mide ${elemento.Altura}.<br>`;
+                }
+                document.getElementById("here").innerHTML = muestra;
+            }
+            
+
+            function sumarAlturas() {
+              const resultado = contactos.reduce(
+                (acumulador, elem) => (acumulador += elem.Altura),
+                0.0
+              );
+
+                console.log("Todos sus contactos miden:", resultado, " cms");
+                
+
+            }
+            
+            while (confirm("¿Desea agregar un contacto a su agenda?")) {
+              agregarContacto();
+            }
+            
+            listarContactos();
+            sumarAlturas();
+
+
                   
         break;
     
