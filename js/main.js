@@ -1,4 +1,6 @@
- 
+let pfObj = [];
+
+// Simular PF 
 btnSimular.addEventListener("click", (e) => {
     depositoCapital = document.querySelector('#capital').value;
     tna = 48 / 100;
@@ -14,6 +16,13 @@ btnSimular.addEventListener("click", (e) => {
                 document.getElementById("dias").innerHTML = duracion + ' dias';
                 document.getElementById("monto").innerHTML = depositoCapital;
                 document.getElementById("clac_error").innerHTML = '';
+                
+                const pfObj = {
+                    id: Date.now(),
+                    detalle: depositoCapital,duracion,tna
+                }
+                console.log(pfObj);
+                localStorage.setItem("id", JSON.stringify(pfObj));
             } 
             else {
                 document.getElementById("clac_error").innerHTML = 'Ingrese valor mayor a $1000.';
@@ -22,4 +31,9 @@ btnSimular.addEventListener("click", (e) => {
             document.getElementById("clac_error").innerHTML = 'Ingrese un plazo mayor a 30.';
     }
 
+});
+
+// Borra Storage
+btnBorrarStorage.addEventListener("click", (e) => {
+    localStorage.clear();
 });
