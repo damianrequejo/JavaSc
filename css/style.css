@@ -1,0 +1,7 @@
+.borrar-plazofijo,
+.borrar-plazofijo:hover {
+    float: right;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+}
