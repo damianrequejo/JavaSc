@@ -26,12 +26,49 @@ btnSimular.addEventListener("click", (e) => {
                 plazosFijos = [...plazosFijos, pfObj]
                 console.log(plazosFijos);
                 localStorage.setItem("id", JSON.stringify(plazosFijos));
+                Toastify({
+                    text: "Simulación exitosa",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                      background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    onClick: function(){} // Callback after click
+                  }).showToast();
+            
             } 
             else {
-                document.getElementById("clac_error").innerHTML = 'Ingrese valor mayor a $1000.';
+                Toastify({
+                    text: "Ingrese valor mayor a $1000.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                      background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    },
+                    onClick: function(){} // Callback after click
+                  }).showToast();
+
             }
     }else{
-            document.getElementById("clac_error").innerHTML = 'Ingrese un plazo mayor a 30.';
+            Toastify({
+                text: "Ingrese un plazo mayor a 30 días.",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "linear-gradient(to right, #00b09b, #96c93d)",
+                },
+                onClick: function(){} // Callback after click
+              }).showToast();
+
     }
    
     limpiarHTML();
@@ -57,9 +94,44 @@ btnSimular.addEventListener("click", (e) => {
 
 // Borra Storage
 btnBorrarStorage.addEventListener("click", (e) => {
-    localStorage.clear();
-    plazosFijos = [];
-    limpiarHTML();
+    Swal.fire({
+        title: 'Esta seguro que desear borrar el storage?',
+        text: 'Esta acción no es reversible!',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si, borrar!',
+        cancelButtonText: 'No, mantenerlo'
+      }).then((result) => {
+        if (result.value) {
+          Swal.fire(
+            'Storage borrado!',
+          )
+          localStorage.clear();
+          plazosFijos = [];
+          limpiarHTML();
+          Toastify({
+              text: "Borrado exitoso",
+              duration: 3000,
+              close: true,
+              gravity: "top", // `top` or `bottom`
+              position: "right", // `left`, `center` or `right`
+              stopOnFocus: true, // Prevents dismissing of toast on hover
+              style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+              },
+              onClick: function(){} // Callback after click
+            }).showToast();
+      
+        // For more information about handling dismissals please visit
+        // https://sweetalert2.github.io/#handling-dismissals
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelado',
+            'El storage no ha sido borrado',
+            'error'
+          )
+        }
+      })
 });
 
 function limpiarHTML() {
