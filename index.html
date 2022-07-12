@@ -28,17 +28,33 @@
               </div>
               <form id="simulador">
                 <div class="form-group">
+                  <div class="form-floating">
+                    <select class="form-select"  name="nombreEntidad" id="nombreBanco" aria-label="Floating label select example">
+                      <option value="-">Seleccione una Entidad</option>
+                    </select>
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group">
                   <label for="capitalaIvertir">Capital a Invertir:</label>
                   <input type="deposito" class="form-control" id="capital" placeholder="(Mínimo 1000 pesos)" />
                 </div>
+                <hr>
                 <div class="form-group">
                   <label for="plazo">Plazo (en días):</label>
                   <input type="number" class="form-control" id="duracion" placeholder="(Mínimo 30 días)"/>
                 </div>
+                <hr>
+                <div class="form-group">
+                  <label for="plazo">Tasa de Interés:</label>
+                  <input type="number" class="form-control" id="tna" disabled/>
+                </div>
+                <hr>
                 <div class="form-group">
                   <button type="button" id="btnSimular" value="simular" class="btn btn-primary">Simular</button>
                   <button type="button" id="btnBorrarStorage" value="borrarStorage" class="btn btn-primary">Borrar Storage</button>
                 </div>
+                <hr>
             </form>
             </div>
           </div>
@@ -97,7 +113,24 @@
         </tbody>
       </table>
     </section>    
-    
+
+
+    <section id="post" class="clear"> 
+      <div class="container">
+        <h2>Comparación de Tasas:</h2>
+      <table class="table" >
+        <thead>
+            <tr>
+              <th>Post</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="tasas"></td>
+            </tr>
+        </tbody>
+      </table>
+    </section>     
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>

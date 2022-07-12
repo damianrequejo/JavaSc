@@ -1,0 +1,22 @@
+[
+    {
+        "id":1,
+        "banco":"Banco Saenz",
+        "tna":49
+    },
+    {
+        "id":2,
+        "banco":"Banco Mariva",
+        "tna":47
+    },
+    {
+        "id":3,
+        "banco":"Banco Roela",
+        "tna":46
+    },
+    {
+        "id":4,
+        "banco":"Banco Columbia",
+        "tna":48
+    }
+]
