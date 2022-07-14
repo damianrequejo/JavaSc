@@ -1,7 +1,7 @@
 let plazosFijos = [];
 const listaPf = document.querySelector('#lista-plazosfijos');
 
-// Evento Actualizo Tasa
+// Evento Actualizo Tasa de Interes
 nombreBanco.addEventListener("change", (e) => {
   var tnaSeleccionada = document.getElementById("nombreBanco");
 //  console.log(tnaSeleccionada.value);
