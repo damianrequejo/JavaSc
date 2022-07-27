@@ -1,10 +1,10 @@
 let plazosFijos = [];
 const listaPf = document.querySelector('#lista-plazosfijos');
+cargoSimulaciones()
 
 // Evento Actualizo Tasa de Interes
-nombreBanco.addEventListener("change", (e) => {
+  nombreBanco.addEventListener("change", (e) => {
   var tnaSeleccionada = document.getElementById("nombreBanco");
-//  console.log(tnaSeleccionada.value);
   const urlTna = "./js/datos.json";
   const actualizoTasa = async ()=>{
     const buscoTasa = await fetch(urlTna)
@@ -19,10 +19,6 @@ nombreBanco.addEventListener("change", (e) => {
     }
     encuentroTasa = tasa.filter(buscarID)
     encuentroBanco = bancoNombre.filter(buscarID)
-//    console.log(encuentroTasa);
-//    console.log(encuentroBanco);
-//    console.log("La tasa es: " + encuentroTasa[0].tna);
-//    console.log("El banco es: " + encuentroBanco[0].banco);
     document.getElementById("tnaPf").innerHTML = encuentroTasa[0].tna+"%";
   }
   actualizoTasa()
@@ -33,7 +29,6 @@ btnSimular.addEventListener("click", (e) => {
   banco = document.querySelector('#nombreBanco').value;
   depositoCapital = document.querySelector('#capital').value;
   duracion = document.querySelector('#duracion').value;
-//  console.log(banco);
   if(banco=='-'){
     errorBanco();
     } else {
@@ -53,7 +48,13 @@ btnSimular.addEventListener("click", (e) => {
 
 // Evento Botón Borrar Storage
 btnBorrarStorage.addEventListener("click", (e) => {
+  if(localStorage.length == 0){
     Swal.fire({
+      title: 'No existen simulaciones almacenadas',
+      type: 'warning',
+      })
+    } else {
+      Swal.fire({
         title: 'Esta seguro que desear borrar las simulaciones efectuadas?',
         text: 'Esta acción no es reversible!',
         type: 'warning',
@@ -63,7 +64,7 @@ btnBorrarStorage.addEventListener("click", (e) => {
       }).then((result) => {
         if (result.value) {
           Swal.fire(
-            'Simulaciones borradas!',
+          'Simulaciones borradas!',
           )
           localStorage.clear();
           plazosFijos = [];
@@ -77,6 +78,7 @@ btnBorrarStorage.addEventListener("click", (e) => {
           )
         }
       })
+    }
   });
 
 // Funcion Simular
@@ -101,50 +103,95 @@ function simularPF() {
     interes: interes.toFixed(2),
     monto: cf.toFixed(2)
   }
+  if(localStorage.length != 0){
+    plazosFijos = JSON.parse(localStorage.getItem("id"));
+  }
   plazosFijos = [...plazosFijos, pfObj]
-//      console.log(plazosFijos);
       localStorage.setItem("id", JSON.stringify(plazosFijos));
       mensajeSimulacion();
  }
 
 // Función Incorpora Simulación a Lista
 function listaSimulación(){
-    const $listaplazosfijos = document.querySelector("#lista-plazosfijos");
-    // Recorrer todos los productos
-    plazosFijos.forEach(pfObj => {
-    // Crear un <tr>
-    const $tr = document.createElement("tr");
-    // El td del Id
-    let $tdId = document.createElement("td");
-    $tdId.textContent = pfObj.id;
-    $tr.appendChild($tdId);
-    // Creamos el <td> de Banco
-    let $tdBanco = document.createElement("td");
-    $tdBanco.textContent = pfObj.banco; 
-    $tr.appendChild($tdBanco);
-    // El td de Capital
-    let $tdCapital = document.createElement("td");
-    $tdCapital.textContent = pfObj.capital;
-    $tr.appendChild($tdCapital);
-    // El td de Duracion
-    let $tdDuracion = document.createElement("td");
-    $tdDuracion.textContent = pfObj.duracion;
-    $tr.appendChild($tdDuracion);
-    // El td de Tasa
-    let $tdTasa = document.createElement("td");
-    $tdTasa.textContent = pfObj.tna.toFixed(2)*100+'%';
-    $tr.appendChild($tdTasa);
-    // El td del Interes
-    let $tdInteres = document.createElement("td");
-    $tdInteres.textContent = pfObj.interes;
-    $tr.appendChild($tdInteres);
-    // El td del Monto Total
-    let $tdMonto = document.createElement("td");
-    $tdMonto.textContent = pfObj.monto;
-    $tr.appendChild($tdMonto);
-    // Finalmente agregamos el <tr> al cuerpo de la tabla
-    $listaplazosfijos.appendChild($tr);
+  const $listaplazosfijos = document.querySelector("#lista-plazosfijos");
+  // Recorrer todos los plazos fijos
+  plazosFijos.forEach(pfObj => {
+  // Crear un <tr>
+  const $tr = document.createElement("tr");
+  // El td del Id
+  let $tdId = document.createElement("td");
+  $tdId.textContent = pfObj.id;
+  $tr.appendChild($tdId);
+  // Creamos el <td> de Banco
+  let $tdBanco = document.createElement("td");
+  $tdBanco.textContent = pfObj.banco; 
+  $tr.appendChild($tdBanco);
+  // El td de Capital
+  let $tdCapital = document.createElement("td");
+  $tdCapital.textContent = pfObj.capital;
+  $tr.appendChild($tdCapital);
+  // El td de Duracion
+  let $tdDuracion = document.createElement("td");
+  $tdDuracion.textContent = pfObj.duracion;
+  $tr.appendChild($tdDuracion);
+  // El td de Tasa
+  let $tdTasa = document.createElement("td");
+  $tdTasa.textContent = pfObj.tna.toFixed(2)*100+'%';
+  $tr.appendChild($tdTasa);
+  // El td del Interes
+  let $tdInteres = document.createElement("td");
+  $tdInteres.textContent = pfObj.interes;
+  $tr.appendChild($tdInteres);
+  // El td del Monto Total
+  let $tdMonto = document.createElement("td");
+  $tdMonto.textContent = pfObj.monto;
+  $tr.appendChild($tdMonto);
+  // Finalmente agregamos el <tr> al cuerpo de la tabla
+  $listaplazosfijos.appendChild($tr);
 });
+}
+
+// Función Muestra Simulaciones
+function cargoSimulaciones() {
+  if(localStorage.length != 0){
+    const $listaplazosfijos = document.querySelector("#lista-plazosfijos");
+    const $listaSimulaciones = JSON.parse(localStorage.getItem("id"));
+    // Recorrer todos los productos
+    $listaSimulaciones.forEach($listaSimulaciones => {
+      // Crear un <tr>
+      const $tr = document.createElement("tr");
+      // El td del Id
+      let $tdId = document.createElement("td");
+      $tdId.textContent = $listaSimulaciones.id;
+      $tr.appendChild($tdId);
+      // Creamos el <td> de Banco
+      let $tdBanco = document.createElement("td");
+      $tdBanco.textContent = $listaSimulaciones.banco; 
+      $tr.appendChild($tdBanco);
+      // El td de Capital
+      let $tdCapital = document.createElement("td");
+      $tdCapital.textContent = $listaSimulaciones.capital;
+      $tr.appendChild($tdCapital);
+      // El td de Duracion
+      let $tdDuracion = document.createElement("td");
+      $tdDuracion.textContent = $listaSimulaciones.duracion;
+      $tr.appendChild($tdDuracion);
+      // El td de Tasa
+      let $tdTasa = document.createElement("td");
+      $tdTasa.textContent = $listaSimulaciones.tna.toFixed(2)*100+'%';
+      $tr.appendChild($tdTasa);
+      // El td del Interes
+      let $tdInteres = document.createElement("td");
+      $tdInteres.textContent = $listaSimulaciones.interes;
+      $tr.appendChild($tdInteres);
+      // El td del Monto Total
+      let $tdMonto = document.createElement("td");
+      $tdMonto.textContent = $listaSimulaciones.monto;
+      $tr.appendChild($tdMonto);
+      // Finalmente agregamos el <tr> al cuerpo de la tabla
+      $listaplazosfijos.appendChild($tr);
+    });
+  }
 }
 
 // Función LimpiarHTML
@@ -165,7 +212,6 @@ const consultarTasas = async ()=>{
       const { id, banco, tna } = tasas;
       li.innerHTML = `${banco.toUpperCase()} otorga una tasa de ${tna}%`;
       listaTasas.append(li);
-//      console.log(tasas);
     });
   }
   consultarTasas()
